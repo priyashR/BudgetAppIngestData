@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.gmail.ramawthar.priyash</groupId>
+	<artifactId>budgetDataIngestion</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
+
+	<name>budgetDataIngestion</name>
+	<description>Demo project for Spring Boot</description>
+
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.1.0.RELEASE</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<java.version>1.8</java.version>
+		<docker.image.prefix>priyash</docker.image.prefix>
+		<docker.repo>budget-app</docker.repo>
+		<docker.artifactId>budgetDataIngestion</docker.artifactId>
+		<docker.version>0.0.1-SNAPSHOT</docker.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-amqp</artifactId>
+		</dependency>
+	    <dependency>
+	      <groupId>org.springframework.integration</groupId>
+	      <artifactId>spring-integration-mail</artifactId>
+	      <scope>compile</scope>
+	      <exclusions>
+	        <exclusion>
+	          <artifactId>jackson-module-kotlin</artifactId>
+	          <groupId>com.fasterxml.jackson.module</groupId>
+	        </exclusion>
+	      </exclusions>
+	    </dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+    <dependency>
+      <groupId>javax.mail</groupId>
+      <artifactId>javax.mail-api</artifactId>
+      <version>1.5.5</version>
+      <scope>compile</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>jackson-module-kotlin</artifactId>
+          <groupId>com.fasterxml.jackson.module</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>com.sun.mail</groupId>
+      <artifactId>javax.mail</artifactId>
+      <version>1.5.5</version>
+      <scope>compile</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>jackson-module-kotlin</artifactId>
+          <groupId>com.fasterxml.jackson.module</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+      <scope>compile</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>jackson-module-kotlin</artifactId>
+          <groupId>com.fasterxml.jackson.module</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+	        <plugin>
+	            <groupId>com.spotify</groupId>
+	            <artifactId>dockerfile-maven-plugin</artifactId>
+	            <version>1.4.9</version>
+	            <configuration>
+	                <repository>${docker.image.prefix}/${docker.repo}</repository>
+				    <tag>${docker.version}</tag>
+					  <executions>
+					    <execution>
+					      <id>default</id>
+						  <phase>install</phase>
+					      <goals>
+					        <goal>build</goal>
+					        <goal>push</goal>
+					      </goals>
+					    </execution>
+					  </executions>
+				    <buildArgs>
+				      <JAR_FILE>target/${docker.artifactId}-${docker.version}.jar</JAR_FILE>
+				    </buildArgs>
+				    
+			      <serverId>docker-hub-maven-setting-xml</serverId>
+			      <registryUrl>https://index.docker.io/v1/</registryUrl>
+	            </configuration>
+	        </plugin>
+		</plugins>
+	</build>
+
+
+</project>
