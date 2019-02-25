@@ -3,13 +3,13 @@ pipeline {
   stages {
     stage('myStage'){
       steps {
-        sh 'ls -la' 
+        echo 
       }
     }
     
     stage('Build') {
       steps { 
-        sh 'ls' 
+        echo
       }
     }
   }
