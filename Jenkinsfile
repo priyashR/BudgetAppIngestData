@@ -1,9 +1,10 @@
 pipeline {
   agent any
   stages {
-    stage('ListDir') {
+    stage('Initialize') {
       steps {
-        sh 'ls'
+        sh '''echo "PATH = ${PATH}"
+echo "M2_HOME = ${M2_HOME}"'''
       }
     }
   }
