@@ -22,5 +22,10 @@ echo "M2_HOME = ${M2_HOME}"'''
         }
       }
     }
+    stage('Build') {
+      steps {
+        sh 'mvn -f budgetDataIngestion/pom.xml install'
+      }
+    }
   }
 }
