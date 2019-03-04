@@ -18,7 +18,7 @@ echo "M2_HOME = ${M2_HOME}"'''
     }
     stage('changeDir') {
       steps {
-        dir(path: 'budgetDataIngestion')
+        dir(path: '/home/priyash/GITRepos/BudgetAppIngestData/budgetDataIngestion')
       }
     }
   }
