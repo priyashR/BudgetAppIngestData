@@ -16,6 +16,11 @@ echo "M2_HOME = ${M2_HOME}"'''
         }
       }
     }
+    stage('changeDir') {
+      steps {
+        dir(path: 'budgetDataIngestion')
+      }
+    }
   }
   environment {
     maven = 'Maven 3.5.4'
