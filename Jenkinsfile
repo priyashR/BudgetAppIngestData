@@ -18,7 +18,6 @@ echo "M2_HOME = ${M2_HOME}"'''
     }
     stage('Build') {
       steps {
-        dir(path: '/home/priyash/GITRepos/BudgetAppIngestData/budgetDataIngestion')
         sh 'mvn install'
       }
     }
