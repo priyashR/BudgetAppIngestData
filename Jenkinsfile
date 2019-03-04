@@ -22,10 +22,5 @@ echo "M2_HOME = ${M2_HOME}"'''
         }
       }
     }
-    stage('Build') {
-      steps {
-        sh '/usr/bin/mvn install'
-      }
-    }
   }
 }
