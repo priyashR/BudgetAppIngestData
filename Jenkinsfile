@@ -18,10 +18,5 @@ echo "M2_HOME = ${M2_HOME}"'''
         sh 'mvn -f budgetDataIngestion/pom.xml install'
       }
     }
-    stage('') {
-      steps {
-        sh 'docker.build "priyash/test:$BUILD_NUMBER"'
-      }
-    }
   }
 }
