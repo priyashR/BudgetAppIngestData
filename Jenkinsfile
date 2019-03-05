@@ -18,10 +18,5 @@ echo "M2_HOME = ${M2_HOME}"'''
         sh 'mvn -f budgetDataIngestion/pom.xml install'
       }
     }
-    stage('containerize') {
-      steps {
-        sh 'docker image ps'
-      }
-    }
   }
 }
