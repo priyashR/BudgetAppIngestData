@@ -14,7 +14,7 @@ pipeline {
     }
     stage('containerize') {
       steps {
-        sh 'docker -version'
+        sh 'docker -v'
       }
     }
   }
