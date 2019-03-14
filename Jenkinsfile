@@ -15,7 +15,7 @@ pipeline {
     stage('containerize') {
       steps {
         sh '''docker -v
-echo $dockerUser'''
+docker login -u $docker_user -p $docker_pwd'''
       }
     }
   }
