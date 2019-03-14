@@ -1,10 +1,5 @@
 pipeline {
   agent any
-
-    environment {
-        buildID = "${env.BUILD_ID}"
-    }
-
   stages {
     stage('Initialize') {
       steps {
@@ -28,5 +23,8 @@ echo $buildID'''
   tools {
     jdk 'jdk8'
     maven 'maven3'
+  }
+  environment {
+    buildID = "${env.BUILD_ID}"
   }
 }
