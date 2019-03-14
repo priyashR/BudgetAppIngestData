@@ -21,7 +21,7 @@ pipeline {
       steps {
         sh '''docker -v
 docker login -u $docker_user -p $docker_pwd
-echo "Running $buildID"'''
+echo $buildID'''
       }
     }
   }
