@@ -14,7 +14,8 @@ pipeline {
     }
     stage('containerize') {
       steps {
-        sh 'docker -v'
+        sh '''docker -v
+echo $DOCKER_USER'''
       }
     }
   }
