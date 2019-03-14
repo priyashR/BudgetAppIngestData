@@ -12,6 +12,16 @@ pipeline {
         sh 'mvn -f budgetDataIngestion/pom.xml install'
       }
     }
+    stage('containerize') {
+      steps {
+        sh '''docker -v
+docker login -u $docker_user -p $docker_pwd
+echo $buildID
+pwd
+docker build --build-arg JAR_FILE=budgetDataIngestion/target/budgetDataIngestion-0.0.1-SNAPSHOT.jar -t priyash/budget-app-ingestdata:v$buildID .
+docker push priyash/budget-app-ingestdata:v$buildID'''
+      }
+    }
   }
   tools {
     jdk 'jdk8'
