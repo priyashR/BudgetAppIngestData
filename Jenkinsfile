@@ -1,10 +1,5 @@
 pipeline {
   agent any
-    tools {
-        jdk 'jdk8'
-        maven 'maven3'
-    }
-  
   stages {
     stage('Initialize') {
       steps {
@@ -22,5 +17,9 @@ pipeline {
         sh 'docker -version'
       }
     }
+  }
+  tools {
+    jdk 'jdk8'
+    maven 'maven3'
   }
 }
