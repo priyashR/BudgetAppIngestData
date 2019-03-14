@@ -17,7 +17,8 @@ pipeline {
         sh '''docker -v
 docker login -u $docker_user -p $docker_pwd
 echo $buildID
-pwd'''
+pwd
+docker build --build-arg JAR_FILE=budgetDataIngestion/target/budgetDataIngestion-0.0.1-SNAPSHOT.jar -t priyash/budget-app-ingestdata:v$buildID .'''
       }
     }
   }
