@@ -15,7 +15,8 @@ pipeline {
     stage('containerize') {
       steps {
         sh '''docker -v
-docker login -u $docker_user -p $docker_pwd'''
+docker login -u $docker_user -p $docker_pwd
+echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL}"'''
       }
     }
   }
