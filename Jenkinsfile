@@ -17,5 +17,10 @@ pipeline {
         sh 'mvn -f budgetDataIngestion/pom.xml install'
       }
     }
+    stage('containerize') {
+      steps {
+        sh 'docker -version'
+      }
+    }
   }
 }
