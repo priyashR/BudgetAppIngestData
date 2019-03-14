@@ -16,7 +16,7 @@ pipeline {
       steps {
         sh '''docker -v
 docker login -u $docker_user -p $docker_pwd
-echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL}"'''
+echo "Running "'''
       }
     }
   }
