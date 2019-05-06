@@ -57,12 +57,13 @@ public class BudgetTransactions implements ProcessEmail{
 				System.out.println(lines.length+" "+"trxnLine: "+trxnLine);
 				
 				// HACK !!! - this should be done in OpenFaas
-				if (trxnLine.contains("withdrawn from FNB card")){
+				// Fixed up in the logic below
+				/*if (trxnLine.contains("withdrawn from FNB card")){
 					trxnLine = trxnLine.replace("withdrawn from FNB card", "withdrawn from cheq").replace("\n", "").replace("\r", "");
 					String before = trxnLine.substring(0, trxnLine.indexOf("using card.."));
 					String after = trxnLine.substring(trxnLine.indexOf("@ ") );
 					trxnLine = before + after;
-				}
+				}*/
 				// HACK !!! - this should be done in OpenFaas
 				parseLine(trxnLine);
 			}
@@ -121,7 +122,7 @@ public class BudgetTransactions implements ProcessEmail{
 					   .replace(". Avail R", ";")
 					   .replace(". ", ";");
 					
-			trxn = "creditPurchase;out;"+(trxn.substring(0, trxn.length()-6))+";"+trxn.substring(trxn.length()-5);
+			trxn = "creditPurchase;out;"+(trxn.substring(0, trxn.length()-8))+";"+trxn.substring(trxn.length()-7);
 			
 		} else if(trxn.contains(" paid from cheq a/c")){
 			trxn = trxn.substring(trxn.indexOf("FNB :-) R")+9);
@@ -132,7 +133,7 @@ public class BudgetTransactions implements ProcessEmail{
 					   .replace(". Ref.", ";")
 					   .replace(". ", ";");
 			
-			trxn = "cheqPurchase;out;"+(trxn.substring(0, trxn.length()-6))+";"+trxn.substring(trxn.length()-5);
+			trxn = "cheqPurchase;out;"+(trxn.substring(0, trxn.length()-8))+";"+trxn.substring(trxn.length()-7);
 			
 		} else if(trxn.contains(" paid to cheq a/c..")){
 			trxn = trxn.substring(trxn.indexOf("FNB :-) R")+9);
@@ -142,7 +143,7 @@ public class BudgetTransactions implements ProcessEmail{
 					   .replace(" @ Eft. Ref.", ";")
 					   .replace(". ", ";");
 			
-			trxn = "cheqDeposits;in;"+(trxn.substring(0, trxn.length()-6))+";"+trxn.substring(trxn.length()-5);
+			trxn = "cheqDeposits;in;"+(trxn.substring(0, trxn.length()-8))+";"+trxn.substring(trxn.length()-7);
 			
 		} else if(trxn.contains(" withdrawn from cheq a/c..")){
 			trxn = trxn.substring(trxn.indexOf("FNB :-) R")+9);
@@ -152,7 +153,24 @@ public class BudgetTransactions implements ProcessEmail{
 					   .replace(". Avail R", ";")
 					   .replace(". ", ";");
 				
-			trxn = "cheqWithdrawal;out;"+(trxn.substring(0, trxn.length()-6))+";"+trxn.substring(trxn.length()-5);
+			trxn = "cheqWithdrawal;out;"+(trxn.substring(0, trxn.length()-8))+";"+trxn.substring(trxn.length()-7);
+			
+		} else if(trxn.contains(" withdrawn from FNB card")){
+			
+			if(trxn.contains("using card..")){
+				String before = trxn.substring(0, trxn.indexOf("using card.."));
+				String after = trxn.substring(trxn.indexOf("@ ") );	
+				trxn = before + after;
+			}
+			
+			trxn = trxn.substring(trxn.indexOf("FNB :-) R")+9);
+			
+			trxn = trxn.replace(" withdrawn from FNB card a/c..", ";")
+					   .replace(" @ ", ";")
+					   .replace(". Avail R", ";")
+					   .replace(". ", ";");
+				
+			trxn = "cheqWithdrawal;out;"+(trxn.substring(0, trxn.length()-8))+";"+trxn.substring(trxn.length()-7);
 			
 		} else if(trxn.contains(" t/fer from cheq a/c..")){
 			trxn = trxn.substring(trxn.indexOf("FNB :-) R")+9);
@@ -162,7 +180,7 @@ public class BudgetTransactions implements ProcessEmail{
 					   .replace(" @ Online Banking. Avail R", ";")
 					   .replace(". ", ";");
 					
-			trxn = "cheqTransfer;both;"+(trxn.substring(0, trxn.length()-6))+";"+trxn.substring(trxn.length()-5);
+			trxn = "cheqTransfer;both;"+(trxn.substring(0, trxn.length()-8))+";"+trxn.substring(trxn.length()-7);
 			
 			
 		}
@@ -185,8 +203,12 @@ public class BudgetTransactions implements ProcessEmail{
 	public static void main(String [] args){
 		System.out.println("hi");
 		BudgetTransactions bt = new BudgetTransactions("test body");
-		String unprocessedLine = "• FNB :-) R122.06 reserved for purchase @ Checkers Leaping Frog from FNB card a/c..947000 using card..7046. Avail R17811. 4May 11:24";
-		bt.parseLine(unprocessedLine);
+		//String unprocessedLine = "• FNB :-) R122.06 reserved for purchase @ Checkers Leaping Frog from FNB card a/c..947000 using card..7046. Avail R17811. 4May 11:24";
+		//String unprocessedLine = "FNB :-) R130.00 reserved for purchase @ Ster Kinekor Ceda42853 from FNB card a/c..947000 using card..7020. Avail R85. 19Oct 19:33";
+		String unprocessedLine = "• FNB :-) R300.00 withdrawn from cheq a/c..204327 @ 00877361 ATM. Avail R18586. 10Apr 09:49";
+		//String unprocessedLine = "• FNB :-) R250.00 withdrawn from FNB card a/c..947000 using card..7046 @ Caltex N ATM. Avail R12134. 11Dec 17:52";
+		//String unprocessedLine = "• FNB :-) R300.00 withdrawn from FNB card a/c..947000 @ 00877361 ATM. Avail R16936. 6May 12:41";
+		bt.parseLine(unprocessedLine.replace("\n", "").replace("\r", ""));
 		
 	}
 }
