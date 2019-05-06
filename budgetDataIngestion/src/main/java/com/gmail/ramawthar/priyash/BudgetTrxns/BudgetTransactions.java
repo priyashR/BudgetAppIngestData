@@ -99,8 +99,8 @@ public class BudgetTransactions implements ProcessEmail{
         System.out.println("result: "+result);
         */
 		
-        String input = "{\"transaction\":\""+unprocessedLine.replace("\n", "").replace("\r", "").replace(";", "-")+"\"}";
-        System.out.println("input: "+input);
+        String input = unprocessedLine.replace("\n", "").replace("\r", "").replace(";", "-");
+        //System.out.println("input: "+input);
         pushToQueue(parsingLogic(input));
 	}
 	
@@ -122,7 +122,7 @@ public class BudgetTransactions implements ProcessEmail{
 					   .replace(". Avail R", ";")
 					   .replace(". ", ";");
 					
-			trxn = "creditPurchase;out;"+(trxn.substring(0, trxn.length()-8))+";"+trxn.substring(trxn.length()-7);
+			trxn = "creditPurchase;out;"+(trxn.substring(0, trxn.length()-6))+";"+trxn.substring(trxn.length()-5);
 			
 		} else if(trxn.contains(" paid from cheq a/c")){
 			trxn = trxn.substring(trxn.indexOf("FNB :-) R")+9);
@@ -133,7 +133,7 @@ public class BudgetTransactions implements ProcessEmail{
 					   .replace(". Ref.", ";")
 					   .replace(". ", ";");
 			
-			trxn = "cheqPurchase;out;"+(trxn.substring(0, trxn.length()-8))+";"+trxn.substring(trxn.length()-7);
+			trxn = "cheqPurchase;out;"+(trxn.substring(0, trxn.length()-6))+";"+trxn.substring(trxn.length()-5);
 			
 		} else if(trxn.contains(" paid to cheq a/c..")){
 			trxn = trxn.substring(trxn.indexOf("FNB :-) R")+9);
@@ -143,7 +143,7 @@ public class BudgetTransactions implements ProcessEmail{
 					   .replace(" @ Eft. Ref.", ";")
 					   .replace(". ", ";");
 			
-			trxn = "cheqDeposits;in;"+(trxn.substring(0, trxn.length()-8))+";"+trxn.substring(trxn.length()-7);
+			trxn = "cheqDeposits;in;"+(trxn.substring(0, trxn.length()-6))+";"+trxn.substring(trxn.length()-5);
 			
 		} else if(trxn.contains(" withdrawn from cheq a/c..")){
 			trxn = trxn.substring(trxn.indexOf("FNB :-) R")+9);
@@ -153,7 +153,7 @@ public class BudgetTransactions implements ProcessEmail{
 					   .replace(". Avail R", ";")
 					   .replace(". ", ";");
 				
-			trxn = "cheqWithdrawal;out;"+(trxn.substring(0, trxn.length()-8))+";"+trxn.substring(trxn.length()-7);
+			trxn = "cheqWithdrawal;out;"+(trxn.substring(0, trxn.length()-6))+";"+trxn.substring(trxn.length()-5);
 			
 		} else if(trxn.contains(" withdrawn from FNB card")){
 			
@@ -170,7 +170,7 @@ public class BudgetTransactions implements ProcessEmail{
 					   .replace(". Avail R", ";")
 					   .replace(". ", ";");
 				
-			trxn = "cheqWithdrawal;out;"+(trxn.substring(0, trxn.length()-8))+";"+trxn.substring(trxn.length()-7);
+			trxn = "cheqWithdrawal;out;"+(trxn.substring(0, trxn.length()-6))+";"+trxn.substring(trxn.length()-5);
 			
 		} else if(trxn.contains(" t/fer from cheq a/c..")){
 			trxn = trxn.substring(trxn.indexOf("FNB :-) R")+9);
@@ -180,7 +180,7 @@ public class BudgetTransactions implements ProcessEmail{
 					   .replace(" @ Online Banking. Avail R", ";")
 					   .replace(". ", ";");
 					
-			trxn = "cheqTransfer;both;"+(trxn.substring(0, trxn.length()-8))+";"+trxn.substring(trxn.length()-7);
+			trxn = "cheqTransfer;both;"+(trxn.substring(0, trxn.length()-6))+";"+trxn.substring(trxn.length()-5);
 			
 			
 		}
@@ -192,14 +192,13 @@ public class BudgetTransactions implements ProcessEmail{
 	
 	private void pushToQueue(String processedLine){
 		//works!
-		/* removed for testing - place put back
 		QueueManager qm = new QueueManager();
-		qm.publishToQueue(processedLine);*/
-		System.out.println("processedLine  : "+processedLine);
-		System.out.println("complete  :) ");
+		qm.publishToQueue(processedLine);
+		//System.out.println("processedLine  : "+processedLine);
+		//System.out.println("complete  :) ");
 	
 	}
-	
+	/*
 	public static void main(String [] args){
 		System.out.println("hi");
 		BudgetTransactions bt = new BudgetTransactions("test body");
@@ -210,5 +209,5 @@ public class BudgetTransactions implements ProcessEmail{
 		//String unprocessedLine = "• FNB :-) R300.00 withdrawn from FNB card a/c..947000 @ 00877361 ATM. Avail R16936. 6May 12:41";
 		bt.parseLine(unprocessedLine.replace("\n", "").replace("\r", ""));
 		
-	}
+	}*/
 }
