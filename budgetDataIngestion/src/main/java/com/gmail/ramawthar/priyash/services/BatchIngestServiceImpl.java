@@ -13,14 +13,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class BatchIngestServiceImpl implements BatchIngestService {
-    public String processFile(String test){
-        System.out.println("testing the service");
-        return test+" good job!";
-    }
 
     public String processCSVFile(MultipartFile file){
     	String status = "Empty file!";
-    	if (file.isEmpty()){
+    	if (!(file.isEmpty())){
     		status = "File is being processed";
 	    	BufferedReader br;
 	    	List<String> result = new ArrayList<>();
@@ -32,6 +28,7 @@ public class BatchIngestServiceImpl implements BatchIngestService {
 	    	     while ((line = br.readLine()) != null) {
 	    	          result.add(line);
 	    	          System.out.println(line);
+	    	          /*TO DO: process the line and push it to the rabbit Queue"*/
 	    	     }
 	
 	    	  } catch (IOException e) {
